@@ -9,3 +9,10 @@ services:
     volumes:
       - .:/app
     entrypoint: /app/entrypoint.sh
+    networks:
+      - proxynet
+
+
+networks:
+  proxynet:
+    name: otpay_network
