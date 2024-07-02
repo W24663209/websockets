@@ -12,6 +12,7 @@ logging.info('开始启动')
 
 async def handle_client(websocket, path):
     msg = await websocket.recv()  # type:str
+    logging.info("收到消息:",msg)
     # 按逗号分割字符串
     parts = msg.split(",")
 
