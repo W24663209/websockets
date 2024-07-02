@@ -8,21 +8,29 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # 存储所有连接的客户端
 clients = {}
 logging.info('开始启动')
+
+
 async def handle_client(websocket, path):
-    name = await websocket.recv()
-    logging.info(name)
-    clients[websocket] = name
+    msg = await websocket.recv()  # type:str
+    # 按逗号分割字符串
+    parts = msg.split(",")
+
+    # 初始化空字典
+    message_dict = {}
+    # 遍历分割后的部分，按冒号分割并赋值给字典
+    for part in parts:
+        key, value = part.split(":")
+        message_dict[key] = value
+    if msg.startswith('set_name'):
+        clients[message_dict['set_name']] = websocket
+    elif msg.startswith('to'):
+        await clients[message_dict['to']].send(message_dict['message'])
     try:
         async for message in websocket:
-            # 解析消息格式为 "to:recipient,message:content"
-            recipient, content = message.split(",", 1)
-            logging.info(message)
-            for client, client_name in clients.items():
-                logging.info(client_name)
-                if client_name == recipient:
-                    await client.send(content)
+            pass
     finally:
-        del clients[websocket]
+        pass
+
 
 start_server = websockets.serve(handle_client, "0.0.0.0", 8765)
 logging.info('启动成功')
