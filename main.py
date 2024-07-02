@@ -18,6 +18,7 @@ async def handle_client(websocket, path):
             recipient, content = message.split(",", 1)
             logging.info(message)
             for client, client_name in clients.items():
+                logging.info(client_name)
                 if client_name == recipient:
                     await client.send(content)
     finally:
