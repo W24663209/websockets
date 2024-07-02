@@ -3,7 +3,7 @@ import websockets
 
 # 存储所有连接的客户端
 clients = {}
-
+print('开始启动')
 async def handle_client(websocket, path):
     name = await websocket.recv()
     print(name)
@@ -20,6 +20,6 @@ async def handle_client(websocket, path):
         del clients[websocket]
 
 start_server = websockets.serve(handle_client, "0.0.0.0", 8765)
-
+print('启动成功')
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
