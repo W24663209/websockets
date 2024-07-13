@@ -9,29 +9,37 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 clients = {}
 logging.info('开始启动')
 
-
 async def handle_client(websocket, path):
-    msg = await websocket.recv()  # type:str
-    logging.info("收到消息:" + msg)
-    # 按逗号分割字符串
-    parts = msg.split(",")
-
-    # 初始化空字典
-    message_dict = {}
-    # 遍历分割后的部分，按冒号分割并赋值给字典
-    for part in parts:
-        key, value = part.split(":")
-        message_dict[key] = value
-    if msg.startswith('set_name'):
-        clients[message_dict['set_name']] = websocket
-    elif msg.startswith('to'):
-        await clients[message_dict['to']].send(message_dict['message'])
     try:
-        async for message in websocket:
-            pass
-    finally:
-        pass
+        async for msg in websocket:
+            logging.info("收到消息:" + msg)
+            # 按逗号分割字符串
+            parts = msg.split(",")
+            message_dict = {}
+            for part in parts:
+                key, value = part.split(":")
+                message_dict[key] = value.strip()
 
+            if 'set_name' in message_dict:
+                clients[message_dict['set_name']] = websocket
+                logging.info(f"用户 {message_dict['set_name']} 已连接.")
+            elif 'to' in message_dict and 'message' in message_dict:
+                to_client = message_dict['to']
+                if to_client in clients and clients[to_client].open:
+                    await clients[to_client].send(message_dict['message'])
+                    logging.info(f"消息已发送到 {to_client}.")
+                else:
+                    logging.warning(f"无法发送消息到 {to_client}: 连接已关闭或不存在.")
+    except websockets.exceptions.ConnectionClosed:
+        logging.info("连接关闭")
+    except Exception as e:
+        logging.error(f"处理消息时发生错误: {e}")
+    finally:
+        # 清理操作
+        clients_to_remove = [name for name, ws in clients.items() if ws == websocket]
+        for name in clients_to_remove:
+            del clients[name]
+            logging.info(f"用户 {name} 已断开连接.")
 
 start_server = websockets.serve(handle_client, "0.0.0.0", 8765)
 logging.info('启动成功')
