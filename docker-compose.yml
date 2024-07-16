@@ -1,8 +1,8 @@
 version: '3'
 services:
-  websockets:
+  ussd:
     build: .
-    container_name: websockets
+    container_name: ussd
     restart: always
     tty: true
     ports:
