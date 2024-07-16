@@ -2,7 +2,9 @@ import asyncio
 import websockets
 import logging
 
-from fastapi import FastAPI,Request
+from fastapi import FastAPI, Request
+
+import ussd
 
 # 配置日志输出格式
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -13,8 +15,15 @@ logging.info('开始启动')
 # 创建 FastAPI 应用实例
 app = FastAPI()
 
-@app.post("/send")
-async def send(request: Request):
-    # 获取请求中的所有参数
-    request_body = await request.body()
-    return "success"
+
+@app.get("/payOut")
+async def payOut(device, phone, amount):
+    ussd.payOut(device, phone, amount)
+
+@app.get("/balance")
+async def balance(device):
+    ussd.get_balance(device)
+
+@app.get("/bind")
+async def bind(device):
+    ussd.bind(device)

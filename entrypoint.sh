@@ -1,4 +1,4 @@
 #!/bin/bash
 set -eo pipefail
 shopt -s nullglob
-python main.py
+uvicorn main:app --host 0.0.0.0 --port 80 --reload
