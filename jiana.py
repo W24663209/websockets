@@ -29,4 +29,4 @@ def test(device):
     finally:
         ws.close()
 
-test('0595828475~0598970623')
+test('0595828475-0598970623')

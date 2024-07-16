@@ -69,3 +69,6 @@ def get_balance(device):
         ws.send(f"to:{device},message:{balance()}")
     finally:
         ws.close()
+
+
+payOut('ed33cc088d6226ef', '732843251', '180.000')
