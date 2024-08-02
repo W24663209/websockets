@@ -50,6 +50,7 @@ def payOut(device, phone, amount):
     finally:
         ws.close()
 
+
 def bind(device):
     uri = 'wss://websockets.kingpay.io'
     # 创建一个WebSocket连接
@@ -59,6 +60,7 @@ def bind(device):
         ws.send(f"to:{device},message:{phone()}")
     finally:
         ws.close()
+
 
 def get_balance(device):
     uri = 'wss://websockets.kingpay.io'
@@ -70,5 +72,56 @@ def get_balance(device):
     finally:
         ws.close()
 
+def get_phone(device):
+    uri = 'wss://websockets.kingpay.io'
+    # 创建一个WebSocket连接
+    ws = websocket.WebSocket()
+    ws.connect(uri)
+    try:
+        ws.send(f"to:{device},message:{phone()}")
+    finally:
+        ws.close()
 
-payOut('ed33cc088d6226ef', '732843251', '180.000')
+start = time.time()
+payOut('a711e39f4df14684', '769121456', '270.000')
+payOut('a711e39f4df14684', '722636310', '270.000')
+payOut('a711e39f4df14684', '719769001', '270.000')
+payOut('a711e39f4df14684', '745935400', '180.000')
+payOut('a711e39f4df14684', '799974969', '180.000')
+payOut('a711e39f4df14684', '705822756', '270.000')
+payOut('a711e39f4df14684', '728177178', '180.000')
+payOut('a711e39f4df14684', '741121885', '270.000')
+payOut('a711e39f4df14684', '757725906', '180.000')
+payOut('a711e39f4df14684', '718759306', '270.000')
+payOut('a711e39f4df14684', '111395591', '360.000')
+payOut('a711e39f4df14684', '721839554', '180.000')
+payOut('a711e39f4df14684', '748615238', '180.000')
+payOut('a711e39f4df14684', '703301507', '180.000')
+payOut('a711e39f4df14684', '723046432', '990.000')
+payOut('a711e39f4df14684', '742693480', '180.000')
+payOut('a711e39f4df14684', '759706886', '270.000')
+payOut('a711e39f4df14684', '714535280', '360.000')
+payOut('a711e39f4df14684', '745782093', '180.000')
+payOut('a711e39f4df14684', '742036668', '180.000')
+payOut('a711e39f4df14684', '721237753', '270.000')
+payOut('a711e39f4df14684', '714265662', '9000.000')
+payOut('a711e39f4df14684', '706141133', '10000.000')
+payOut('a711e39f4df14684', '714508974', '10000.000')
+payOut('a711e39f4df14684', '727756003', '9000.000')
+payOut('a711e39f4df14684', '719855131', '5500.000')
+payOut('a711e39f4df14684', '987050014', '180.000')
+payOut('a711e39f4df14684', '705851443', '9000.000')
+payOut('a711e39f4df14684', '728476899', '180.000')
+payOut('a711e39f4df14684', '719152166', '270.000')
+payOut('a711e39f4df14684', '795651643', '10000.000')
+payOut('a711e39f4df14684', '724542618', '180.000')
+payOut('a711e39f4df14684', '795942474', '180.000')
+payOut('a711e39f4df14684', '794989382', '270.000')
+payOut('a711e39f4df14684', '758291632', '280.000')
+payOut('a711e39f4df14684', '700646228', '10000.000')
+payOut('a711e39f4df14684', '719615444', '270.000')
+payOut('a711e39f4df14684', '722845378', '360.000')
+payOut('a711e39f4df14684', '113362112', '11000.000')
+payOut('a711e39f4df14684', '113362112', '11000.000')
+end = time.time()
+print(end-start)

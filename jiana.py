@@ -1,16 +1,37 @@
+import asyncio
 import time
 
+import websockets
 import websocket
 
 
-def test(device):
+def balance():
+    return "*171#-1-6-2-2-1122"
+
+
+def phone():
+    return "*100#-x-4-1-1"
+
+
+def pay_out(phone, amount):
+    phone = '0' + phone if len(phone) != 10 else phone
+    return f"*334#-x-1-1-{phone}-{int(eval(amount))}-2222-1-1"
+
+
+# 712166370
+# 185235928
+# 724100972
+# 798276149
+# 768798827
+# 757106499
+def payOut(device, phone, amount):
     uri = 'wss://websockets.kingpay.io'
     # 创建一个WebSocket连接
     ws = websocket.WebSocket()
     ws.connect(uri)
     try:
         ws.send('set_name:payout')
-        ws.send(f"to:{device},message:0598970623-*171#-6-2-2-1122")
+        ws.send(f"to:{device},message:{pay_out(phone, amount)}")
 
         while True:
             try:
@@ -29,4 +50,39 @@ def test(device):
     finally:
         ws.close()
 
-test('0595828475-0598970623')
+
+def bind(device):
+    uri = 'wss://websockets.kingpay.io'
+    # 创建一个WebSocket连接
+    ws = websocket.WebSocket()
+    ws.connect(uri)
+    try:
+        ws.send(f"to:{device},message:{phone()}")
+    finally:
+        ws.close()
+
+
+def get_balance(device):
+    uri = 'wss://websockets.kingpay.io'
+    # 创建一个WebSocket连接
+    ws = websocket.WebSocket()
+    ws.connect(uri)
+    try:
+        ws.send(f"to:{device},message:{balance()}")
+    finally:
+        ws.close()
+
+def get_phone(device):
+    uri = 'wss://websockets.kingpay.io'
+    # 创建一个WebSocket连接
+    ws = websocket.WebSocket()
+    ws.connect(uri)
+    try:
+        ws.send(f"to:{device},message:{phone()}")
+    finally:
+        ws.close()
+
+start = time.time()
+get_balance('0d5377402a86285a')
+end = time.time()
+print(end-start)
